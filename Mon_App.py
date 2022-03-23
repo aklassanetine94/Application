@@ -9,7 +9,7 @@ from PIL import Image
 from PIL import Image 
 img1 = Image.open("Arriere_plan (1).jpg") 
 img2 = Image.open("GUSTAVE EIFFEL.png") 
-  
+
 st.image(img2, width=400)
 st.image(img1, width=400)
 
