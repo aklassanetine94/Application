@@ -2,7 +2,6 @@
 import pandas as pd 
 import streamlit  as st
 from sklearn.ensemble import RandomForestClassifier
-
 from PIL import Image
 
 
@@ -32,7 +31,7 @@ mabase = pd.read_csv(r"C:/Users/Acer/Downloads/Maladies_cardiaques (1).csv")
 st.write('''# Bienvenue dans l'APPLICATION 
 ## PREDICTION DE LA MALADIE DU COEUR ''')
 
-st.sidebar.header("Les paramètres d'entrées")
+st.sidebar.header("Les paramètres d'entrés")
 
 
 
@@ -44,18 +43,18 @@ st.sidebar.header("Les paramètres d'entrées")
 #
 def user_input():# les données a saisir
     # age= st.sidebar.slider('Donner l Age du patient ')
-    age = st.sidebar.number_input("Entrer l'âge du patient",25,100)
+    age = st.sidebar.number_input("Age du Patient",25,100)
     while (not(age in range(25,100,1))):
-        st.warning("Warning:Lâge doit etre comprise entre 25 et 99 ans")
+        st.warning("Warning:L'age doit etre comprise entre 25 et 99 ans")
         break
 
-    sexee=st.sidebar.selectbox('Entrer  le sexe du patient',('Homme' , 'Femme'))
+    sexee=st.sidebar.selectbox('Donner  le sexe du patient  en mettant O si cest une femme et 1 si cest un homme',('Homme' , 'Femme'))
     if (sexee=='Homme'):
         sexe=1
     else:
         sexe=0
         
-    chestPaintypee=st.sidebar.selectbox('Entrer le type de douleur thoracique',('TA : angine typique', 'ATA : angine atypique', 'NAP : douleur non angineuse', 'ASY : asymptomatique'))
+    chestPaintypee=st.sidebar.selectbox('Donner le type de douleur thoracique',('TA : angine typique', 'ATA : angine atypique', 'NAP : douleur non angineuse', 'ASY : asymptomatique'))
     if (chestPaintypee=='TA : angine typique'):
         chestPaintype=0
         
@@ -68,45 +67,45 @@ def user_input():# les données a saisir
         chestPaintype=3
         
         
-    restingBP=st.sidebar.number_input('Entrer la pression artérielle au repos  en mm Hg ',90.0,190.1)
-    cholesterol=st.sidebar.number_input('Entrer le taux cholestérol sérique en mm/dl',60.0,410.9)
+    restingBP=st.sidebar.number_input('Donner la pression artérielle au repos  en mm Hg ',90.0,190.1)
+    cholesterol=st.sidebar.number_input('Donner le taux cholestérol sérique en mm/dl du patient ',60.0,410.9)
 
     
-    fastingBSS=st.sidebar.selectbox('Entrer le taux de glycémie à jeun',( 'Superieur à 120 mg/dl', 'Inférieur à 120 mg/dl'))
-    if (fastingBSS=='Superieur à 120 mg/dl'):
+    fastingBSS=st.sidebar.selectbox(' glycémie à jeun',( 'Taux de glycémie à jeun superieu a 120 mg/dl', 'Taux de glycémie à jeun inférieu a 120 mg/dl'))
+    if (fastingBSS=='Taux de glycémie à jeun superieu a 120 mg/dl'):
         fastingBS=1
      # Votre valeur de glucose de 120 mg / dL est trop élevée. Un bon glucose se situe généralement entre 65 et 99 mg / dL.
     else:
         fastingBS=0
         
 
-    restingECGG=st.sidebar.selectbox("Entrer les résultats de l'électrocardiogramme au repos",(
-                                    'Normal',
-                                    "Anomalie de l'onde ST-T",
-                                    'Hypertrophie ventriculaire gauche'
+    restingECGG=st.sidebar.selectbox('Donner les résultats de l électrocardiogramme au repos ',(
+                                    ' Normal',
+                                    'présentant une anomalie de l onde ST-T',
+                                    'montrant une hypertrophie ventriculaire gauche'
                                     ))
     
     if (restingECGG=='Normal'):
         restingECG=0
-    if (restingECGG=="Anomalie de l'onde ST-T"):
+    if (restingECGG=='présentant une anomalie de l onde ST-T'):
         restingECG=1
     else:
         restingECG=2
 
 
-    MaxHR=st.sidebar.number_input('Entrer la fréquence cardiaque maximale atteinte',60.1, 202.1)
+    MaxHR=st.sidebar.number_input('Donner la fréquence cardiaque maximale atteinte Valeur numérique entre 60 et 202 ',60.1, 202.1)
 
 
-    exercicese_anginaa=st.sidebar.selectbox("Entrer la douleur induite par l'exercice physique du patient",('Absence de douleur' ,'presence de douleur'))
+    exercicese_anginaa=st.sidebar.selectbox('Donner la douleur induite par l exercice physique du patient ',('Absence de douleur' ,'presence de douleur'))
     if (exercicese_anginaa=='Absence de douleur'):
         exercicese_angina=1
     else:
         exercicese_angina=0
         
         
-    oldpeak=st.sidebar.number_input('Entrer la valeur numérique de la dépression ECG',-3.1,4.1)
+    oldpeak=st.sidebar.number_input('Donner Valeur numérique mesurée en dépression du patient ',-3.1,4.1)
 
-    ST_slopee=st.sidebar.selectbox("Entrer la pente du segment ST d'exercice de pointe",('segment ascendant' ,'segment plat' ,'segment descendant '))
+    ST_slopee=st.sidebar.selectbox('Donner la pente du segment ST d exercice de pointe',('segment ascendant' ,'segment plat' ,'segment descendant '))
     
     if (ST_slopee=='segment ascendant'):
         ST_slope=0
@@ -162,29 +161,25 @@ x,y=prep(tabase)
 
 
 model= RandomForestClassifier()
-from sklearn.linear_model import LogisticRegression
-
-#model=LogisticRegression(random_state=0)
 model.fit(x ,y)
-import colorama
-from colorama import Fore
+
 
 
 ypred=model.predict(dff)
 
 proba=model.predict_proba(dff)#prediction de la probabilité
 
-#st.write("La probabilité pour que le patient soit malade est de: ")
+st.write("La probabilité pour que le patient soit malade est de: ")
 #st.write(proba[0,1])
-print(Fore.RED + 'This text is red in color')
 
 if st.button("Predict"):
     resultat=proba[0,1]
-    st.success("La probabilité pour que le patient soit atteint de la maladie du coeur est de {}".format(resultat))
+    st.success("La probabilité pour que le patient soit atteint de la malidie du coeur est de {}".format(resultat))
     if resultat<  0.5:
         st.write(" Le patient n'est pas à risque")
     else:
         st.write("Le patient doit être pris en charge")
+    
 #commentaire sur l'application
-st.markdown("Cette application utilise un modèle machine Learning déployée sur github dans le but d'aider le service soignant dans leur prise de décision." \
-               "Elle donne la probabilité qu'un patient ait une insuffisance cardiaque (p>0.50) ou non (p<0.50).") 
+st.markdown("Cette application utilise un modèle Machine Learning déployé sur github dans le but d'aider les cardialogues dans leur travail." \
+               "Elle prédit la probabilité pour qu'un patient soit positif (classe 1) ou non négatif  (classe 0 ) à la maladie du coeur.") 
